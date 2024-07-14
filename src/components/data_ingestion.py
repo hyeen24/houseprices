@@ -1,7 +1,10 @@
 import os 
 import sys
-from src.logger import logging
-from src.exception import CustomException
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
+from logger import logging
+from exception import CustomException
+from data_transfomation import DataTransformation
 import pandas as pd
 
 
@@ -18,12 +21,12 @@ class DataInjestion:
         self.ingestion_config = DataIngestionConfig()
 
     def initiate_data_ingestion(self):
-        logging.infor("Data ingestion initiated")
+        logging.info("Data ingestion initiated")
 
         try:
             #Read the data as Dataframe
-            df_train = pd.read_csv('noteboook\data\train.csv')
-            df_test = pd.read_csv('noteboook\data\train.csv')
+            df_train = pd.read_csv('notebook/data/train.csv')
+            df_test = pd.read_csv('notebook/data/test.csv')
             logging.info("Reading data set")
 
             # Create file path for training data if not exist
@@ -51,3 +54,6 @@ class DataInjestion:
 if __name__ == "__main__" :
     obj = DataInjestion()
     train_data, test_data = obj.initiate_data_ingestion()
+
+    data_transformation = DataTransformation()
+    train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_data, test_data)
